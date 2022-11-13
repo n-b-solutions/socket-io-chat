@@ -10,8 +10,12 @@ const expressServer = app.listen(3333, () => {
 
 const io = socketio(expressServer);
 
+const chatRoom = "chat-room";
+
 io.on("connection", (socket) => {
   const username = socket.handshake.query.username;
+
+  socket.join(chatRoom);
 
   // emit to the all connected users except to the sender
   socket.broadcast.emit("userConnect", {
@@ -28,6 +32,7 @@ io.on("connection", (socket) => {
       username,
       msg,
     };
-    io.emit("chatMessage", fullMsg);
+    // emit to the all users in the chat-room except of the sender
+    socket.broadcast.to(chatRoom).emit("chatMessage", fullMsg);
   });
 });
