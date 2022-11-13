@@ -1,7 +1,8 @@
-var socket = io();
-var messages = document.getElementById("messages");
-var form = document.getElementById("form");
-var input = document.getElementById("input");
+const username = prompt("What is your username?");
+const socket = io({ query: { username } });
+const messages = document.getElementById("messages");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -11,9 +12,9 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-socket.on("chatMessage", (msg) => {
+socket.on("chatMessage", (fullMsg) => {
   var item = document.createElement("li");
-  item.textContent = msg;
+  item.textContent = `${fullMsg.username} - ${fullMsg.msg}`;
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });

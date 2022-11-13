@@ -11,15 +11,23 @@ const expressServer = app.listen(3333, () => {
 const io = socketio(expressServer);
 
 io.on("connection", (socket) => {
+  const username = socket.handshake.query.username;
+
   // emit to the all connected users except to the sender
-  socket.broadcast.emit("userConnect", { msg: "A new user connected" });
+  socket.broadcast.emit("userConnect", {
+    msg: `${username} connected the chat — take a second to say hello.`,
+  });
 
   socket.on("disconnecting", (socket) => {
-  // emit to the all connected users, the sender is no longer connect..
-    io.emit("userDisconnecting", { msg: "user is disconnecting" });
+    // emit to the all connected users, the sender is no longer connect..
+    io.emit("userDisconnecting", { msg: `${username} is disconnecting` });
   });
 
   socket.on("chatMessage", (msg) => {
-    io.emit("chatMessage", msg);
+    const fullMsg = {
+      username,
+      msg,
+    };
+    io.emit("chatMessage", fullMsg);
   });
 });
