@@ -17,3 +17,11 @@ socket.on("chatMessage", (msg) => {
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });
+
+socket.on("userConnect", ({ msg }) => {
+  console.log(msg);
+});
+
+socket.on("userDisconnecting", ({ msg }) => {
+  console.log(msg);
+});
