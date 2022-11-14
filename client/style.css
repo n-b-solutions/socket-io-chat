@@ -37,6 +37,13 @@ body {
   color: #fff;
 }
 
+#typing-span {
+  bottom: 50px;
+  position: fixed;
+  left: 20px;
+  font-size: 13px;
+}
+
 #messages {
   list-style-type: none;
   margin: 0;

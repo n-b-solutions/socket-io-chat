@@ -3,6 +3,7 @@ const socket = io({ query: { username } });
 const messages = document.getElementById("messages");
 const form = document.getElementById("form");
 const input = document.getElementById("input");
+const typingSpan = document.getElementById("typing-span");
 
 const addMsg = (fullMsg) => {
   var item = document.createElement("li");
@@ -20,6 +21,10 @@ form.addEventListener("submit", (e) => {
   }
 });
 
+input.addEventListener("keypress", (e) => {
+  socket.emit("typing");
+});
+
 socket.on("chatMessage", (fullMsg) => {
   addMsg(fullMsg);
 });
@@ -30,4 +35,11 @@ socket.on("userConnect", ({ msg }) => {
 
 socket.on("userDisconnecting", ({ msg }) => {
   console.log(msg);
+});
+
+socket.on("memberTyping", ({ username }) => {
+  typingSpan.textContent = `${username} is typing...`;
+  setTimeout(() => {
+    typingSpan.textContent = "";
+  }, 2000);
 });

@@ -35,4 +35,8 @@ io.on("connection", (socket) => {
     // emit to the all users in the chat-room except of the sender
     socket.broadcast.to(chatRoom).emit("chatMessage", fullMsg);
   });
+
+  socket.on("typing", () => {
+    socket.broadcast.to(chatRoom).emit("memberTyping", { username });
+  });
 });
